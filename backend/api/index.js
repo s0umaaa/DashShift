@@ -2,6 +2,14 @@
 const express = require('express')
 const cors = require('cors')
 
+// CORS設定を明示的に指定
+const corsOptions = {
+  origin: ['https://dashshift.org', 'http://localhost:5173', 'https://*.pages.dev'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}
+
 // Google Places API helper
 async function fetchPlaces(keyword, center) {
   const key = process.env.GOOGLE_PLACES_API_KEY
@@ -169,7 +177,22 @@ function generateFallbackJobs() {
 }
 
 const app = express()
-app.use(cors())
+
+// CORS設定を先に適用
+app.use(cors(corsOptions))
+
+// 手動でCORSヘッダーも追加（念のため）
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200)
+  } else {
+    next()
+  }
+})
 
 // キャッシュ（30分間）
 let cachedJobs = []
@@ -178,46 +201,56 @@ const CACHE_DURATION = 30 * 60 * 1000
 
 // GET /jobs
 app.get('/jobs', async (req, res) => {
-  const q = String(req.query.q || '').trim().toLowerCase()
-  const date = String(req.query.date || '').trim()
-  
-  // キャッシュチェック
-  const now = Date.now()
-  if (cachedJobs.length === 0 || (now - lastFetch) > CACHE_DURATION) {
-    console.log('Generating new jobs...')
-    cachedJobs = await generateDynamicJobs()
-    lastFetch = now
+  try {
+    const q = String(req.query.q || '').trim().toLowerCase()
+    const date = String(req.query.date || '').trim()
+    
+    // キャッシュチェック
+    const now = Date.now()
+    if (cachedJobs.length === 0 || (now - lastFetch) > CACHE_DURATION) {
+      console.log('Generating new jobs...')
+      cachedJobs = await generateDynamicJobs()
+      lastFetch = now
+    }
+    
+    let jobs = cachedJobs
+    
+    if (q) {
+      jobs = jobs.filter((j) => 
+        j.title.toLowerCase().includes(q) ||
+        j.company.toLowerCase().includes(q)
+      )
+    }
+    
+    if (date) {
+      jobs = jobs.filter((j) => j.start.slice(0, 10) === date)
+    }
+    
+    res.json(jobs)
+  } catch (error) {
+    console.error('Error in /jobs endpoint:', error)
+    res.status(500).json({ error: 'Internal server error' })
   }
-  
-  let jobs = cachedJobs
-  
-  if (q) {
-    jobs = jobs.filter((j) => 
-      j.title.toLowerCase().includes(q) ||
-      j.company.toLowerCase().includes(q)
-    )
-  }
-  
-  if (date) {
-    jobs = jobs.filter((j) => j.start.slice(0, 10) === date)
-  }
-  
-  res.json(jobs)
 })
 
 // GET /jobs/:id
 app.get('/jobs/:id', async (req, res) => {
-  // キャッシュから取得
-  if (cachedJobs.length === 0) {
-    cachedJobs = await generateDynamicJobs()
-    lastFetch = Date.now()
-  }
-  
-  const job = cachedJobs.find((j) => j.id === req.params.id)
-  if (!job) {
-    res.status(404).json({ error: 'Job not found' })
-  } else {
-    res.json(job)
+  try {
+    // キャッシュから取得
+    if (cachedJobs.length === 0) {
+      cachedJobs = await generateDynamicJobs()
+      lastFetch = Date.now()
+    }
+    
+    const job = cachedJobs.find((j) => j.id === req.params.id)
+    if (!job) {
+      res.status(404).json({ error: 'Job not found' })
+    } else {
+      res.json(job)
+    }
+  } catch (error) {
+    console.error('Error in /jobs/:id endpoint:', error)
+    res.status(500).json({ error: 'Internal server error' })
   }
 })
 
