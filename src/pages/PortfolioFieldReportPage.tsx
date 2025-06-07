@@ -132,7 +132,7 @@ export default function PortfolioFieldReportPage(): JSX.Element {
             className="mx-auto mt-4 text-lg px-6 py-4 bg-primary"
           >
             <a
-              href="https://youtu.be/hlIQ7lBknPg"
+              href="https://youtu.be/Y4miV_FLC8g"
               target="_blank"
               rel="noreferrer"
             >
@@ -579,7 +579,7 @@ export default function PortfolioFieldReportPage(): JSX.Element {
         <Heading t="Demo Video" />
         <div className="relative max-w-5xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg">
           <iframe
-            src="https://www.youtube.com/embed/hlIQ7lBknPg"
+            src="https://www.youtube.com/embed/Y4miV_FLC8g"
             title="DashShift Demo Video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
