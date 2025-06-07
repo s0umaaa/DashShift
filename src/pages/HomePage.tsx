@@ -36,7 +36,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/jobs?date=${dateStr(selectedDateIdx)}`)
+        const res = await fetch(`https://backend-moauuwk5t-somas-projects-8022b24c.vercel.app/jobs?date=${dateStr(selectedDateIdx)}`)
         if (!res.ok) throw new Error('backend error')
         const data = (await res.json()) as Job[]
         const fetchedJobs = data.length ? data : MOCK_JOBS
