@@ -1677,7 +1677,7 @@ export const MobileScreenShowcase = (): JSX.Element => {
   const selectedScreenData = screens.find(screen => screen.id === selectedScreen);
 
   return (
-    <div className="bg-neutral-800/50 rounded-xl p-8">
+    <div className="bg-neutral-800/50 rounded-xl p-8 relative">
       <h3 className="text-2xl font-bold mb-6 text-center">Mobile App Screens</h3>
       <p className="text-center text-neutral-400 mb-8">Click on any screen to view details and access the live app</p>
       
@@ -1705,7 +1705,7 @@ export const MobileScreenShowcase = (): JSX.Element => {
 
       {/* Modal */}
       {selectedScreen && selectedScreenData && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50 p-4 rounded-xl">
           <div className="bg-neutral-900 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
             {/* Modal Header */}
             <div className="flex justify-between items-center p-6 border-b border-neutral-700">
