@@ -28,7 +28,7 @@ export default function JobDetailPage() {
   useEffect(() => {
     async function fetchJob() {
       try {
-        const res = await fetch(`https://backend-moauuwk5t-somas-projects-8022b24c.vercel.app/jobs?date=${dateStr(selectedDateIdx)}`)
+        const res = await fetch(`https://backend-mtisslsng-somas-projects-8022b24c.vercel.app/jobs/${id}`)
         if (!res.ok) throw new Error('not found')
         const data = (await res.json()) as Job
         setJob(data)

@@ -38,7 +38,7 @@ export default function MapPage() {
   /* ─────────────── job fetch ─────────────── */
   const fetchJobs = useCallback(async (idx: number) => {
     try {
-      const res = await fetch(`https://backend-moauuwk5t-somas-projects-8022b24c.vercel.app/jobs?date=${dateStr(idx)}`)
+      const res = await fetch(`https://backend-mtisslsng-somas-projects-8022b24c.vercel.app/jobs?date=${dateStr(idx)}`)
       if (!res.ok) throw new Error('backend error')
       const data = (await res.json()) as Job[]
       setJobs(data.length ? data : MOCK_JOBS)
