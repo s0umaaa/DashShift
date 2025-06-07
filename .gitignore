@@ -37,3 +37,4 @@ backend/tsconfig.json
 # Public folder (uploaded manually)
 public/
 EOFpublic/
+.vercel
