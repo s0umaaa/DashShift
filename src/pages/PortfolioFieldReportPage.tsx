@@ -587,35 +587,6 @@ export default function PortfolioFieldReportPage(): JSX.Element {
           />
         </div>
       </section>
-
-      {/* ───── References ───── */}
-      <section className="bg-neutral-900 py-16 px-4">
-        <Heading t="References" />
-        <div className="max-w-4xl mx-auto bg-neutral-800/50 rounded-xl p-6">
-          <div className="space-y-3 text-sm text-neutral-400">
-            <p>
-              Hawlitschek, F., Teubner, T., &amp; Weinhardt, C. (2016). Trust in
-              the sharing economy. <em>Swiss Journal of Business Research</em>.
-            </p>
-            <p>
-              Healy, J., Nicholson, D., &amp; Pekarek, A. (2017). Should we take
-              the gig economy seriously? <em>Labour &amp; Industry</em>.
-            </p>
-            <p>
-              Jin, D., &amp; Liu-Lastres, B. (2024). Gig economy impact on the
-              hospitality workforce. <em>IJCHM</em>.
-            </p>
-            <p>
-              Wobbrock, J. O., &amp; Kientz, J. A. (2016). Research
-              contributions in HCI. <em>interactions</em>.
-            </p>
-            <p>
-              Zaman, U. et al. (2020). Joy of gig work.{' '}
-              <em>Cogent Business &amp; Management</em>.
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
